@@ -10,7 +10,6 @@ const io = new Server(server);
 let blueScore = 0;
 let redScore = 0;
 
-// Ton pseudo TikTok ici
 const tiktokUsername = 'vonxclem';
 
 const tiktok = new WebcastPushConnection(tiktokUsername, {
