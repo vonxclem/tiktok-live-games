@@ -9,6 +9,7 @@ const io = new Server(server);
 
 let blueScore = 28;
 let redScore = 31;
+let likeCount = 0;
 
 const tiktokUsername = 'vonxclem';
 
@@ -39,6 +40,13 @@ tiktok.on('gift', (data) => {
   }
 
   io.emit('update', { blue: blueScore, red: redScore });
+});
+
+tiktok.on('like', (data) => {
+  likeCount += data.likeCount || 1;
+  console.log(`Like reçu ! Total : ${likeCount}`);
+
+  io.emit('likes', { likes: likeCount });
 });
 
 app.use(express.static('public'));
