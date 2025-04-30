@@ -113,6 +113,17 @@
       document.getElementById('blueScore').textContent = blue;
       document.getElementById('redScore').textContent = red;
     });
+
+    document.querySelector('h1').addEventListener('click', () => {
+      const el = document.documentElement;
+      if (!document.fullscreenElement) {
+        el.requestFullscreen().catch((err) => {
+          alert(`Error: ${err.message}`);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    });
   </script>
 </body>
 </html>
