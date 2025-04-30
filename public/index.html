@@ -85,7 +85,7 @@
 </head>
 <body>
   <h1>
-      <strong>500 roses / cœurs - 10k Likes</strong>
+      <strong><span id="likesDisplay">0</span> 10k &hearts;</strong>
       <br><span style="font-weight: light !important">Cadeaux aléatoires</span>
   </h1>
 
@@ -116,6 +116,10 @@
       document.getElementById('red').style.width = `${100 - bluePercent}%`;
       document.getElementById('blueScore').textContent = blue;
       document.getElementById('redScore').textContent = red;
+    });
+
+    socket.on('likes', ({ likes }) => {
+      document.getElementById('likesDisplay').textContent = `${likes}`;
     });
 
     document.querySelector('h1').addEventListener('click', () => {
