@@ -17,9 +17,9 @@ const tiktok = new WebcastPushConnection(tiktokUsername, {
 });
 
 tiktok.connect().then(() => {
-  console.log(`Connecté au live de @${tiktokUsername}`);
+  console.log(`Connected to @${tiktokUsername}`);
 }).catch(err => {
-  console.error('Erreur de connexion TikTok :', err);
+  console.error('Connection error:', err);
 });
 
 tiktok.on('gift', (data) => {
@@ -38,5 +38,5 @@ app.use(express.static('public'));
 
 const port = process.env.PORT || 3000;
 server.listen(port, () => {
-  console.log(`Serveur web en ligne sur le port ${port}`);
+  console.log(`Web server: ${port}`);
 });
