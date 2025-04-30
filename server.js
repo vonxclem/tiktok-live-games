@@ -30,7 +30,8 @@ connectToTikTok();
 
 tiktok.on('gift', (data) => {
   const giftName = data.extendedGiftInfo?.name?.toLowerCase() || '';
-
+  console.log(`Gift : ${giftName}`);
+    
   if (giftName.includes('rose')) {
     blueScore++;
   } else if (giftName.includes('heart') || giftName.includes('heart me')) {
