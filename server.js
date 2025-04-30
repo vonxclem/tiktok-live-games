@@ -27,7 +27,7 @@ tiktok.on('gift', (data) => {
 
   if (giftName.includes('rose')) {
     blueScore++;
-  } else if (giftName.includes('ballon') || giftName.includes('balloon')) {
+  } else if (giftName.includes('heart') || giftName.includes('heart me')) {
     redScore++;
   }
 
