@@ -16,11 +16,17 @@ const tiktok = new WebcastPushConnection(tiktokUsername, {
   enableExtendedGiftInfo: true
 });
 
-tiktok.connect().then(() => {
-  console.log(`Connected to @${tiktokUsername}`);
-}).catch(err => {
-  console.error('Connection error:', err);
-});
+async function connectToTikTok() {
+  try {
+    await tiktok.connect();
+    console.log(`Connected to @${tiktokUsername} !`);
+  } catch (err) {
+    console.error('Connection error:', err.message);
+    setTimeout(connectToTikTok, 10000); 
+  }
+}
+
+connectToTikTok();
 
 tiktok.on('gift', (data) => {
   const giftName = data.extendedGiftInfo?.name?.toLowerCase() || '';
