@@ -7,8 +7,8 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-let blueScore = 0;
-let redScore = 0;
+let blueScore = 28;
+let redScore = 31;
 
 const tiktokUsername = 'vonxclem';
 
