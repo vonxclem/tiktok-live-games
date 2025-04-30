@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Rouge vs Bleu</title>
+  <title>Red vs Blue</title>
   <style>
     body { background: #111; color: #fff; text-align: center; font-family: sans-serif; }
-    .bar { display: flex; height: 50px; margin: 50px auto; width: 80%; border: 2px solid #fff; }
+    .bar { display: flex; height: 60%; margin: 50px auto; width: 80%; border: 2px solid #fff; }
     .blue, .red { height: 100%; transition: width 0.3s; }
     .blue { background-color: blue; }
     .red { background-color: red; }
   </style>
 </head>
 <body>
-  <h1>Bataille TikTok en direct</h1>
+  <h1>Live Battle</h1>
   <div class="bar">
     <div id="blue" class="blue" style="width:50%"></div>
     <div id="red" class="red" style="width:50%"></div>
   </div>
-  <p id="score">Bleu : 0 | Rouge : 0</p>
+  <p id="score">Blue : 0 | Red : 0</p>
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io();
@@ -25,7 +25,7 @@
       const bp = (blue / total) * 100;
       document.getElementById('blue').style.width = bp + '%';
       document.getElementById('red').style.width = (100 - bp) + '%';
-      document.getElementById('score').textContent = `Bleu : ${blue} | Rouge : ${red}`;
+      document.getElementById('score').textContent = `Blue : ${blue} | Red : ${red}`;
     });
   </script>
 </body>
