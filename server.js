@@ -1,7 +1,7 @@
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
-const fetch = require('node-fetch');
+// const fetch = require('node-fetch');
 const { WebcastPushConnection } = require('./src/index');
 
 const app = express();
