@@ -52,6 +52,31 @@
       overflow: hidden;
     }
 
+    .bar-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .bar-label {
+      font-size: 1.2em;
+      width: 80px;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .bar-wrapper {
+        flex-direction: column;
+      }
+
+      .bar-label {
+        width: auto;
+      }
+    }
+
     .blue,
     .red {
       height: 100%;
@@ -100,9 +125,13 @@
     </div>
   </div>
 
+  <div class="bar-wrapper">
+  <div class="bar-label left">Team Adidas</div>
   <div class="bar">
     <div id="blue" class="blue" style="width:50%"></div>
     <div id="red" class="red" style="width:50%"></div>
+  </div>
+  <div class="bar-label right">Team Nike</div>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
