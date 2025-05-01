@@ -8,7 +8,7 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 let blueScore = 28;
-let redScore = 31;
+let redScore = 28;
 let likeCount = 0;
 const topDonors = {}; 
 
@@ -61,7 +61,7 @@ tiktok.on('gift', (data) => {
 
 tiktok.on('like', (data) => {
   likeCount += data.likeCount || 1;
-  console.log(`Like reçu ! Total : ${likeCount}`);
+  console.log(`Total likes: ${likeCount}`);
 
   io.emit('likes', { likes: likeCount });
 });
