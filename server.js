@@ -10,6 +10,7 @@ const io = new Server(server);
 let blueScore = 28;
 let redScore = 31;
 let likeCount = 0;
+const topDonors = {}; 
 
 const tiktokUsername = 'vonxclem';
 
@@ -32,6 +33,9 @@ connectToTikTok();
 tiktok.on('gift', (data) => {
   const giftName = data.extendedGiftInfo?.name?.toLowerCase() || '';
   console.log(`Gift : ${giftName}`);
+  const senderId = data.uniqueId;
+  const senderName = data.nickname || senderId;
+  const senderProfile = data.profilePictureUrl;
     
   if (giftName.includes('rose')) {
     blueScore++;
@@ -39,7 +43,20 @@ tiktok.on('gift', (data) => {
     redScore++;
   }
 
+  if (!topDonors[senderId]) {
+    topDonors[senderId] = {
+      name: senderName,
+      profile: senderProfile,
+      count: 1
+    };
+  } else {
+    topDonors[senderId].count += 1;
+  }
+
+  const best = Object.values(topDonors).sort((a, b) => b.count - a.count)[0];
+
   io.emit('update', { blue: blueScore, red: redScore });
+  io.emit('topDonor', best); 
 });
 
 tiktok.on('like', (data) => {
