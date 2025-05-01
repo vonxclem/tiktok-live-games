@@ -52,35 +52,44 @@
       overflow: hidden;
     }
 
-    .bar-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 30px;
-    }
-
-    .bar-label {
+    .label {
+      position: absolute;
       font-size: 1.2em;
-      width: 80px;
-      text-align: center;
+      font-weight: bold;
+      color: #fff;
+      padding: 10px;
+      white-space: nowrap;
     }
 
-    @media (max-width: 600px) {
-      .bar-wrapper {
-        flex-direction: column;
-      }
-
-      .bar-label {
-        width: auto;
-      }
+    .left-label {
+      left: 10px;
+      text-align: left;
     }
 
-    .blue,
+    .right-label {
+      right: 10px;
+      text-align: right;
+    }
+
+    .bar {
+      position: relative;
+      display: flex;
+      height: 180px;
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto 30px;
+      border: 2px solid #fff;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .blue, 
     .red {
+      position: relative;
       height: 100%;
       transition: width 0.3s ease;
+      display: flex;
+      align-items: center;
     }
 
     .blue {
@@ -125,13 +134,13 @@
     </div>
   </div>
 
-  <div class="bar-wrapper">
-  <div class="bar-label left">Team Adidas</div>
   <div class="bar">
-    <div id="blue" class="blue" style="width:50%"></div>
-    <div id="red" class="red" style="width:50%"></div>
+  <div id="blue" class="blue" style="width:50%">
+    <span class="label left-label">Team Adidas</span>
   </div>
-  <div class="bar-label right">Team Nike</div>
+  <div id="red" class="red" style="width:50%">
+    <span class="label right-label">Team Nike</span>
+  </div>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
