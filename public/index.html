@@ -135,12 +135,21 @@
   </style>
 </head>
 <body>
-    
-  <h1>
-      <span id="likesDisplay">0</span> / 10k &nbsp; <i class="bi bi-heart-fill"></i>
-  </h1>
-  <p class="gift-text"><i class="bi bi-arrow-right"></i> Cadeaux aléatoires</p>
-
+  <div style="display: flex; flex: row; max-width: 480px">
+      <div style="flex-grow: 1; text-align: left">
+        <h1>
+             <span id="likesDisplay">0</span> / 10k &nbsp; <i class="bi bi-heart-fill"></i>
+        </h1>
+        <p class="gift-text"><i class="bi bi-arrow-right"></i> Cadeaux aléatoires</p>
+      </div>
+      <div style="flex-grow: 1; ">
+          <div id="topDonor" style="margin-bottom: 0px;">
+             <img id="donorImg" src="avatar.png" alt="Top Donor" style="width: 60px; height: 60px; border-radius: 50%; display: none;">
+             <div id="donorName" style="margin-top: 5px;">...</div>
+          </div>
+      </div>
+  </div>
+      
   <div class="anim-container">
      <dotlottie-player
         src="https://lottie.host/1bc4e440-426e-4ff1-bd2e-36ae7c60d2f0/gtGZulq4NE.lottie"
@@ -187,6 +196,16 @@
 
     socket.on('likes', ({ likes }) => {
       document.getElementById('likesDisplay').textContent = `${likes}`;
+    });
+
+    socket.on('topDonor', (donor) => {
+      if (!donor) return;
+      const img = document.getElementById('donorImg');
+      const name = document.getElementById('donorName');
+
+      img.src = donor.profile;
+      img.style.display = 'inline-block';
+      name.textContent = `${donor.name} (${donor.count})`;
     });
 
     document.querySelector('h1').addEventListener('click', () => {
