@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TTL Red vs Blue</title>
+  <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     body {
@@ -109,6 +110,13 @@
       background: linear-gradient(to left, #f00, #f55);
     }
 
+    .anim-container {
+      position: fixed; 
+      left: 0;
+      bottom: 0;
+      z-index: 999;
+    }
+
     @media (max-width: 600px) {
       .score-box {
         flex-direction: column;
@@ -134,6 +142,16 @@
   </h1>
   <p class="gift-text"><i class="bi bi-arrow-right"></i> Cadeaux aléatoires</p>
 
+  <div class="anim-container">
+     <dotlottie-player
+  src="https://lottie.host/1bc4e440-426e-4ff1-bd2e-36ae7c60d2f0/gtGZulq4NE.lottie"
+  background="transparent"
+  speed="1"
+  style="width: 300px; height: 300px"
+  loop
+  autoplay
+></dotlottie-player>
+  </div>
 
   <div class="score-icons">
     <div class="score-box">
