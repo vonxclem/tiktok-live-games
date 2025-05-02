@@ -1,1 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TTL Red vs Blue</title>
+  <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    body {
+      user-select: none;
+      background: #111;
+      color: #fff;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 10px;
+      text-align: center;
+    }
 
+    h1 {
+      margin-bottom: 8px;
+      font-size: 24px;
+    }
+      
+    .gift-text {
+      font-size: 18px;
+      margin-top: 0px;
+      margin-bottom: 24px;
+    }
+
+    .score-icons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 100px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .score-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.2em;
+    }
+
+    .score-box img {
+      width: 50px;
+      height: 50px;
+    }
+
+    .bar {
+      display: flex;
+      height: 180px;
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto 30px;
+      border: 2px solid #fff;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .label {
+      position: absolute;
+      font-size: 1.4em;
+      font-weight: bold;
+      color: black;
+      padding: 8px 12px;
+      white-space: nowrap;
+      background-color: rgba(255, 255, 255, 1.0);
+      border-radius: 25px;
+    }
+
+    .left-label {
+      left: 10px;
+      text-align: left;
+    }
+
+    .right-label {
+      right: 10px;
+      text-align: right;
+    }
+
+    .bar {
+      position: relative;
+      display: flex;
+      height: 180px;
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto 30px;
+      border: 2px solid #fff;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .blue, 
+    .red {
+      position: relative;
+      height: 100%;
+      transition: width 0.3s ease;
+      display: flex;
+      align-items: center;
+    }
+
+    .blue {
+      background: linear-gradient(to right, #00f, #33f);
+    }
+
+    .red {
+      background: linear-gradient(to left, #f00, #f55);
+    }
+
+    .anim-container {
+      position: fixed; 
+      left: -20px;
+      bottom: -20px;
+      z-index: 999;
+    }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 600px;
+      width: 100%;
+      margin: 0 auto 20px;
+      text-align: left;
+    }
+
+    .likes-section h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .likes-section p {
+      margin: 4px 0 0;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    #topDonor {
+      text-align: right;
+    }
+
+    #topDonor img {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      display: inline-block;
+    }
+
+    #topDonor div {
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    @media (max-width: 600px) {
+      .score-box {
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .score-box img {
+        width: 50px;
+        height: 50px;
+      }
+
+      .bar {
+        height: 180px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header-bar">
+  <div class="likes-section">
+    <h1>
+      <span id="likesDisplay">0</span> / 10k &nbsp; <i class="bi bi-heart-fill"></i>
+    </h1>
+    <p class="gift-text"><i class="bi bi-arrow-right"></i> Cadeaux</p>
+  </div>
+  <div class="donor-section">
+    <div id="topDonor">
+      <img id="donorImg" src="avatar-3814049_1280.png" alt="Top Donor">
+      <div id="donorName">Top donateur</div>
+    </div>
+  </div>
+  </div>
+      
+  <div class="anim-container">
+     <dotlottie-player
+        src="https://lottie.host/1bc4e440-426e-4ff1-bd2e-36ae7c60d2f0/gtGZulq4NE.lottie"
+        background="transparent"
+        speed="1"
+        style="width: 200px; height: 200px"
+        loop
+        autoplay
+     ></dotlottie-player>
+  </div>
+
+  <div class="score-icons">
+    <div class="score-box">
+      <img src="/blue.webp" alt="Flower" />
+      <span id="blueScore">28</span>
+    </div>
+    <div class="score-box">
+      <img src="/red.webp" alt="Heart Me" />
+      <span id="redScore">28</span>
+    </div>
+  </div>
+
+  <div class="bar">
+  <div id="blue" class="blue" style="width:50%">
+    <span class="label left-label">Team Apple</span>
+  </div>
+  <div id="red" class="red" style="width:50%">
+    <span class="label right-label">Team Samsung</span>
+  </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    socket.on('update', ({ blue, red }) => {
+      const total = blue + red || 1;
+      const bluePercent = (blue / total) * 100;
+
+      document.getElementById('blue').style.width = `${bluePercent}%`;
+      document.getElementById('red').style.width = `${100 - bluePercent}%`;
+      document.getElementById('blueScore').textContent = blue;
+      document.getElementById('redScore').textContent = red;
+    });
+
+    socket.on('likes', ({ likes }) => {
+      document.getElementById('likesDisplay').textContent = `${likes}`;
+    });
+
+    socket.on('topDonors', (donors) => {
+      if (!Array.isArray(donors) || donors.length === 0) return;
+
+      const top = donors[0]; 
+      const img = document.getElementById('donorImg');
+      const name = document.getElementById('donorName');
+
+      img.src = top.profile;
+      img.style.display = 'inline-block';
+      name.textContent = `${top.name} (${top.count})`;
+    });
+
+    document.querySelector('h1').addEventListener('click', () => {
+      const el = document.documentElement;
+      if (!document.fullscreenElement) {
+        el.requestFullscreen().catch((err) => {
+          alert(`Error: ${err.message}`);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    });
+  </script>
+</body>
+</html>
