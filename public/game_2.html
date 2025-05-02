@@ -1,1 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Like Challenge</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 10px;
+      text-align: center;
+    }
 
+    .top-donors {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .donor-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .donor-card img {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      margin-bottom: 5px;
+      object-fit: cover;
+    }
+
+    .like-bar-container {
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto 30px;
+      height: 40px;
+      border: 2px solid #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      background-color: #333;
+    }
+
+    .like-bar-fill {
+      background: linear-gradient(to right, #f0c000, #fcd400);
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .chest-img {
+      position: absolute;
+      right: -35px;
+      top: -25px;
+      width: 80px;
+      height: 80px;
+    }
+
+    .likes-count {
+      margin-top: -10px;
+      font-size: 18px;
+      color: #ccc;
+    }
+
+    @media (max-width: 600px) {
+      .chest-img {
+        right: -25px;
+        top: -20px;
+        width: 60px;
+        height: 60px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-donors" id="topDonors">
+    <!-- Top donors will be injected here -->
+  </div>
+
+  <div class="like-bar-container">
+    <div class="like-bar-fill" id="likeFill"></div>
+    <img src="/5bbc47db8353d-b4d03b6fa95d9fab240b315193f10790.png" alt="Treasure" class="chest-img" />
+  </div>
+  <div class="likes-count">
+    <span id="likesDisplay">0</span> / 5000 Likes
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    // Update like bar
+    socket.on('likes', ({ likes }) => {
+      const max = 5000;
+      const fillPercent = Math.min((likes / max) * 100, 100);
+      document.getElementById('likeFill').style.width = `${fillPercent}%`;
+      document.getElementById('likesDisplay').textContent = likes;
+    });
+
+    // Update top 3 donors
+    socket.on('topDonors', (donors) => {
+      const container = document.getElementById('topDonors');
+      container.innerHTML = '';
+      donors.slice(0, 3).forEach(donor => {
+        const div = document.createElement('div');
+        div.className = 'donor-card';
+        div.innerHTML = `
+          <img src="${donor.profile}" alt="${donor.name}">
+          <div>${donor.name}</div>
+          <div>Gifts: ${donor.count}</div>
+        `;
+        container.appendChild(div);
+      });
+    });
+  </script>
+</body>
+</html>
