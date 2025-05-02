@@ -4,15 +4,44 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TTLG - Like Challenge</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
   <style>
-    body {
-      background: #111;
-      color: #fff;
-      font-family: sans-serif;
+    * {
+      box-sizing: border-box;
+    }
+
+    body, html {
       margin: 0;
-      padding: 10px;
+      padding: 0;
+      font-family: sans-serif;
+      color: #fff;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    #bgVideo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    .overlay-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      max-width: 700px;
+      margin: auto;
       text-align: center;
     }
 
@@ -45,6 +74,7 @@
       align-items: center;
       gap: 20px;
       margin-bottom: 20px;
+      flex-wrap: wrap;
     }
 
     .like-bar-container {
@@ -90,28 +120,49 @@
       z-index: 999;
       display: none;
     }
+
+    @media screen and (max-width: 600px) {
+      .chest-img {
+        width: 70px;
+        height: 70px;
+      }
+      .likes-count {
+        font-size: 22px;
+      }
+      .like-bar-container {
+        height: 25px;
+      }
+    }
   </style>
 </head>
 <body>
-  <br><br>
-  <div class="popup" id="popupMessage">Treasure is available!</div>
-  <div class="top-donors" id="topDonors">
+
+  <video autoplay muted loop id="bgVideo">
+    <source src="/file_01.webm" type="video/webm">
+    Browser not supported.
+  </video>
+
+  <div class="overlay-card">
+    <div class="popup" id="popupMessage">Treasure is available!</div>
+
+    <div class="top-donors" id="topDonors">
       <div class="donor-card">
-          <img src="/avatar-3814049_1280.png">
-          <div>User_1</div>
-          <div>Gifts: 0</div>
+        <img src="/avatar-3814049_1280.png" alt="User_1">
+        <div>User_1</div>
+        <div>Gifts: 0</div>
       </div>
-  </div>
-  <br>
-  <div class="like-bar-wrapper" id="barWrapper">
-    <div class="like-bar-container" id="likeBar">
-      <div class="like-bar-fill" id="likeFill"></div>
     </div>
-    <img src="/5bbc47db8353d-b4d03b6fa95d9fab240b315193f10790.png" alt="Treasure" class="chest-img" />
-  </div>
-  <br>
-  <div class="likes-count">
-    <span id="likesDisplay">0</span> / 5000 <i class="bi bi-heart-fill"></i>
+
+    <div class="like-bar-wrapper" id="barWrapper">
+      <div class="like-bar-container" id="likeBar">
+        <div class="like-bar-fill" id="likeFill"></div>
+      </div>
+      <img src="/5bbc47db8353d-b4d03b6fa95d9fab240b315193f10790.png" alt="Treasure" class="chest-img" />
+    </div>
+
+    <div class="likes-count">
+      <span id="likesDisplay">0</span> / 5000 <i class="bi bi-heart-fill"></i>
+    </div>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
