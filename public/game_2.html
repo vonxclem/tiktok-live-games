@@ -79,8 +79,8 @@
 
     .like-bar-container {
       position: relative;
-      width: 100%;
-      max-width: 500px;
+      width: calc(100vw - 60px);
+      max-width: 800px;
       height: 30px;
       border: 2px solid #fff;
       border-radius: 20px;
@@ -88,6 +88,7 @@
       background-color: #333;
       cursor: pointer;
     }
+    
 
     .like-bar-fill {
       background: linear-gradient(to right, #f0c000, #fcd400);
@@ -148,8 +149,7 @@
     <div class="top-donors" id="topDonors">
       <div class="donor-card">
         <img src="/avatar-3814049_1280.png" alt="User_1">
-        <div>User_1</div>
-        <div>Gifts: 0</div>
+        <div>User_1 (0)</div>
       </div>
     </div>
 
@@ -218,8 +218,7 @@
         div.className = 'donor-card';
         div.innerHTML = `
           <img src="${donor.profile}" alt="${donor.name}">
-          <div>${donor.name}</div>
-          <div>Gifts: ${donor.count}</div>
+          <div>${donor.name} (${donor.count})</div>
         `;
         container.appendChild(div);
       });
