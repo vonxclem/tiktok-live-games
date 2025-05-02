@@ -1,7 +1,6 @@
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
-// const fetch = require('node-fetch');
 const { WebcastPushConnection } = require('./src/index');
 
 const app = express();
@@ -21,7 +20,6 @@ const tiktok = new WebcastPushConnection(tiktokUsername, {
 let lastGiftTime = Date.now();
 let lastLikeTime = Date.now();
 
-// Connect to TikTok live
 async function connectToTikTok() {
   try {
     await tiktok.connect();
@@ -34,7 +32,6 @@ async function connectToTikTok() {
 
 connectToTikTok();
 
-// GIFT event
 tiktok.on('gift', (data) => {
   lastGiftTime = Date.now();
 
@@ -45,25 +42,28 @@ tiktok.on('gift', (data) => {
 
   console.log('Gift received:', giftName);
 
+  // Attribution des points selon le nom du cadeau
   if (giftName.includes('rose')) {
     blueScore++;
   } else if (giftName.includes('heart') || giftName.includes('heart me')) {
     redScore++;
   }
 
+  // Enregistrer ou mettre à jour le donateur
   if (!topDonors[senderId]) {
     topDonors[senderId] = { name: senderName, profile: senderProfile, count: 1 };
   } else {
     topDonors[senderId].count += 1;
   }
 
-  const best = Object.values(topDonors).sort((a, b) => b.count - a.count)[0];
+  const topThree = Object.values(topDonors)
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 3);
 
   io.emit('update', { blue: blueScore, red: redScore });
-  io.emit('topDonor', best);
+  io.emit('topDonors', topThree);
 });
 
-// LIKE event
 tiktok.on('like', (data) => {
   lastLikeTime = Date.now();
   likeCount += data.likeCount || 1;
@@ -71,24 +71,23 @@ tiktok.on('like', (data) => {
   io.emit('likes', { likes: likeCount });
 });
 
-// End of live event
 tiktok.on('streamEnd', () => {
-  console.log('Live has ended. Resetting scores.');
+  console.log('Live has ended. Resetting all scores.');
   blueScore = 0;
   redScore = 0;
   likeCount = 0;
   for (const id in topDonors) delete topDonors[id];
+
   io.emit('update', { blue: 0, red: 0 });
   io.emit('likes', { likes: 0 });
-  io.emit('topDonor', null);
+  io.emit('topDonors', []);
 });
 
-// WebSocket events
 tiktok.on('connected', () => console.log('WebSocket connected'));
 tiktok.on('disconnected', () => console.log('WebSocket disconnected'));
 tiktok.on('error', (err) => console.error('TikTok error:', err));
 
-// Inactivity reconnection watchdog
+// Reconnexion si inactif (aucun like ou cadeau pendant 2min)
 setInterval(() => {
   const now = Date.now();
   const noActivity = now - lastGiftTime > 120000 && now - lastLikeTime > 120000;
@@ -100,7 +99,7 @@ setInterval(() => {
   }
 }, 30000);
 
-// Keep-alive ping to prevent Render from sleeping
+// Keep-alive Render
 setInterval(() => {
   fetch(`https://${process.env.RENDER_EXTERNAL_URL || 'localhost'}/`).catch(() => {});
 }, 60000);
