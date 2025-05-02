@@ -235,14 +235,16 @@
       document.getElementById('likesDisplay').textContent = `${likes}`;
     });
 
-    socket.on('topDonor', (donor) => {
-      if (!donor) return;
+    socket.on('topDonors', (donors) => {
+      if (!Array.isArray(donors) || donors.length === 0) return;
+
+      const top = donors[0]; 
       const img = document.getElementById('donorImg');
       const name = document.getElementById('donorName');
 
-      img.src = donor.profile;
+      img.src = top.profile;
       img.style.display = 'inline-block';
-      name.textContent = `${donor.name} (${donor.count})`;
+      name.textContent = `${top.name} (${top.count})`;
     });
 
     document.querySelector('h1').addEventListener('click', () => {
