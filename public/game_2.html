@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Like Challenge</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     body {
       background: #111;
@@ -38,16 +38,24 @@
       object-fit: cover;
     }
 
+    .like-bar-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
     .like-bar-container {
       position: relative;
       width: 100%;
-      max-width: 600px;
-      margin: 0 auto 30px;
+      max-width: 500px;
       height: 40px;
       border: 2px solid #fff;
       border-radius: 20px;
       overflow: hidden;
       background-color: #333;
+      cursor: pointer;
     }
 
     .like-bar-fill {
@@ -58,56 +66,83 @@
     }
 
     .chest-img {
-      position: absolute;
-      right: -35px;
-      top: -25px;
-      width: 80px;
-      height: 80px;
+      width: 60px;
+      height: 60px;
     }
 
     .likes-count {
-      margin-top: -10px;
       font-size: 18px;
       color: #ccc;
+      margin-bottom: 20px;
     }
 
-    @media (max-width: 600px) {
-      .chest-img {
-        right: -25px;
-        top: -20px;
-        width: 60px;
-        height: 60px;
-      }
+    .popup {
+      background-color: #fcd400;
+      color: #111;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 12px;
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 999;
+      display: none;
     }
   </style>
 </head>
 <body>
 
-  <div class="top-donors" id="topDonors">
-    <!-- Top donors will be injected here -->
-  </div>
+  <div class="popup" id="popupMessage">Treasure is available!</div>
 
-  <div class="like-bar-container">
-    <div class="like-bar-fill" id="likeFill"></div>
+  <div class="top-donors" id="topDonors"></div>
+
+  <div class="like-bar-wrapper" id="barWrapper">
+    <div class="like-bar-container" id="likeBar">
+      <div class="like-bar-fill" id="likeFill"></div>
+    </div>
     <img src="/5bbc47db8353d-b4d03b6fa95d9fab240b315193f10790.png" alt="Treasure" class="chest-img" />
   </div>
+
   <div class="likes-count">
-    <span id="likesDisplay">0</span> / 5000 Likes
+    <span id="likesDisplay">0</span> / 500 Likes
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io();
+    const likeFill = document.getElementById('likeFill');
+    const likesDisplay = document.getElementById('likesDisplay');
+    const popup = document.getElementById('popupMessage');
+    let currentLikes = 0;
+    const maxLikes = 500;
 
-    // Update like bar
     socket.on('likes', ({ likes }) => {
-      const max = 5000;
-      const fillPercent = Math.min((likes / max) * 100, 100);
-      document.getElementById('likeFill').style.width = `${fillPercent}%`;
-      document.getElementById('likesDisplay').textContent = likes;
+      currentLikes = likes;
+      updateBar();
     });
 
-    // Update top 3 donors
+    function updateBar() {
+      const fillPercent = Math.min((currentLikes / maxLikes) * 100, 100);
+      likeFill.style.width = `${fillPercent}%`;
+      likesDisplay.textContent = currentLikes;
+
+      if (fillPercent >= 100) {
+        showPopup("Treasure is available!");
+        setTimeout(() => {
+          likeFill.style.width = '0%';
+          likesDisplay.textContent = '0';
+          currentLikes = 0;
+        }, 5000);
+      }
+    }
+
+    function showPopup(text) {
+      popup.textContent = text;
+      popup.style.display = 'block';
+      setTimeout(() => popup.style.display = 'none', 3000);
+    }
+
     socket.on('topDonors', (donors) => {
       const container = document.getElementById('topDonors');
       container.innerHTML = '';
@@ -121,6 +156,15 @@
         `;
         container.appendChild(div);
       });
+    });
+
+    document.getElementById('likeBar').addEventListener('click', () => {
+      const el = document.documentElement;
+      if (!document.fullscreenElement) {
+        el.requestFullscreen().catch(err => console.error(err));
+      } else {
+        document.exitFullscreen();
+      }
     });
   </script>
 </body>
