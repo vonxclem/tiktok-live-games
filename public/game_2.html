@@ -96,7 +96,7 @@
   <div class="popup" id="popupMessage">Treasure is available!</div>
 
   <div class="top-donors" id="topDonors"></div>
-  <br><br><br>
+  <br><br><br><br>
   <div class="like-bar-wrapper" id="barWrapper">
     <div class="like-bar-container" id="likeBar">
       <div class="like-bar-fill" id="likeFill"></div>
@@ -114,25 +114,35 @@
     const likeFill = document.getElementById('likeFill');
     const likesDisplay = document.getElementById('likesDisplay');
     const popup = document.getElementById('popupMessage');
-    let currentLikes = 0;
+
+    let totalLikes = 0;
+    let likesSinceLastChest = 0;
     const maxLikes = 500;
+    let isChestAvailable = false;
 
     socket.on('likes', ({ likes }) => {
-      currentLikes = likes;
-      updateBar();
+      const newLikes = likes - totalLikes;
+      totalLikes = likes;
+
+      if (!isChestAvailable) {
+        likesSinceLastChest += Math.max(0, newLikes);
+        updateBar();
+      }
     });
 
     function updateBar() {
-      const fillPercent = Math.min((currentLikes / maxLikes) * 100, 100);
+      const fillPercent = Math.min((likesSinceLastChest / maxLikes) * 100, 100);
       likeFill.style.width = `${fillPercent}%`;
-      likesDisplay.textContent = currentLikes;
+      likesDisplay.textContent = likesSinceLastChest;
 
       if (fillPercent >= 100) {
+        isChestAvailable = true;
         showPopup("Treasure is available!");
         setTimeout(() => {
+          likesSinceLastChest = 0;
           likeFill.style.width = '0%';
           likesDisplay.textContent = '0';
-          currentLikes = 0;
+          isChestAvailable = false;
         }, 5000);
       }
     }
