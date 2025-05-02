@@ -105,7 +105,7 @@
   </div>
 
   <div class="likes-count">
-    <span id="likesDisplay">0</span> / 500 Likes
+    <span id="likesDisplay">0</span> / 5000 Likes
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
@@ -117,7 +117,7 @@
 
     let totalLikes = 0;
     let likesSinceLastChest = 0;
-    const maxLikes = 500;
+    const maxLikes = 5000;
     let isChestAvailable = false;
 
     socket.on('likes', ({ likes }) => {
